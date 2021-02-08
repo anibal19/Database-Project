@@ -1,6 +1,5 @@
 # Database-Project
-COMP4018-060 
-Aplicacion para manejar membresias de clubes utilizando bases de datos.t
+COMP4018-060. Aplicacion para manejar membresias de clubes utilizando bases de datos.
 
 # Contributors
 
