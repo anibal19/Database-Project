@@ -46,7 +46,7 @@ def login(): #not the one in use
        Button(login_screen, text="Login", width=10, height=1, command=login_verification).pack()
 
 def search(id, se_lf):
-   conn = psycopg2.connect(dbname="postgres", user="postgres",password="Minecraft6485", host="localhost", port="5432")
+   conn = psycopg2.connect(dbname="postgres", user="postgres",password=" ", host="localhost", port="5432") #Añadir password del database local de postgres
    cursor = conn.cursor()
    query = '''SELECT * FROM students WHERE id=%s'''
    cursor.execute(query, (id))
