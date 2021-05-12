@@ -1,593 +1,414 @@
-from tkinter import END, LEFT, Listbox, ttk, Tk, Canvas, Label, Frame, Entry, Button, W, E, Toplevel, StringVar, BOTTOM
+import sys
 import psycopg2
-import os
-import tkinter as tk
-from tkinter import font as tkfont 
-# root = Tk()
-# root.title("Login Screen")
-
-
-#TODO add label in between buttons to separate them 
-
-
-login_options = {
-  "Client":   "cli",
-  "Admin":    "adm",
-  "Employee": "emp"
-}
-
-def login(): #not the one in use
-   login_screen = Toplevel(main_screen)
-   login_screen.title("Login")
-   login_screen.geometry("300x250")
-   Label(login_screen, text="Entre los detalles para iniciar sesion").pack()
-   
- 
-   global username_verify
-   global password_verify
- 
-   username_verify = StringVar()
-   password_verify = StringVar()
- 
-   
-   Label(login_screen, text="Username * ").pack()
-   username_login_entry = Entry(login_screen, textvariable=username_verify)
-   username_login_entry.pack()
-   Label(login_screen, text="").pack()
-   Label(login_screen, text="Password * ").pack()
-   password__login_entry = Entry(login_screen, textvariable=password_verify, show= '*')
-   password__login_entry.pack()
-   Label(login_screen, text="").pack()
-   if option == login_options[Client]:
-      Button(login_screen, text="Login", width=10, height=1, command=login_verification).pack()
-   elif option == login_options[Admin]:
-       Button(login_screen, text="Login", width=10, height=1, command=login_verification).pack()
-   else:
-       Button(login_screen, text="Login", width=10, height=1, command=login_verification).pack()
-
-def search(id, se_lf):
-   conn = psycopg2.connect(dbname="postgres", user="postgres",password=" ", host="localhost", port="5432") #Añadir password del database local de postgres
-   cursor = conn.cursor()
-   query = '''SELECT * FROM students WHERE id=%s'''
-   cursor.execute(query, (id))
-
-   row = cursor.fetchone()
-   # listbox = Listbox(frame, width=20, heigh=5)
-   # listbox.grid(row = 10, columnspan = 4, sticky = W+E)
-
-   # for x in row:
-   #     listbox.insert(END, x)
-   
-   listbox = Listbox(se_lf, width = 30, height = 1)
-   listbox.grid(row = 4, column=1)
-   listbox.insert(END, row)
-
-   conn.commit()
-   conn.close()
-
-def page_setup(se_lf, head_text): #used to display the head_text on a Frame
-   label = tk.Label(se_lf, text=head_text, font=se_lf.controller.title_font)
-   label.grid(row = 1, column=1, sticky="nsew")
-   se_lf.grid_rowconfigure(1, weight=1)
-   se_lf.grid_columnconfigure(1, weight=1)
-
-#def login_handler:
-   #se_lf.controller.show_frame("ClientPage")
-
-def login_input(se_lf, option): #used to show login input on a Frame
-   Label(se_lf, text="Entre los detalles para iniciar sesion").grid(row=2, column=1)
-   Label(se_lf, text="").grid(row = 3, column=1)
- 
-   global username_verify
-   global password_verify
- 
-   username_verify = StringVar()
-   password_verify = StringVar()
-   
-   Label(se_lf, text="Username * ").grid(row=4, column=1)
-   username_login_entry = Entry(se_lf, textvariable=username_verify)
-   username_login_entry.grid(row=5, column=1)
-   Label(se_lf, text="").grid(row=6, column=1)
-   Label(se_lf, text="Password * ").grid(row=7, column=1)
-   password__login_entry = Entry(se_lf, textvariable=password_verify, show= '*')
-   password__login_entry.grid(row=8, column=1)
-   Label(se_lf, text="").grid(row=9, column=1)
-   if option == login_options["Client"]:
-       Button(se_lf, text="Login", width=10, height=1, command=lambda: se_lf.controller.show_frame("ClientPage")).grid(row=10, column=1) 
-   elif option == login_options["Admin"]:                                                #replace self with login_handler
-       Button(se_lf, text="Login", width=10, height=1, command=lambda : se_lf.controller.show_frame("AdminPage")).grid(row=10, column=1)
-   else:
-       Button(se_lf, text="Login", width=10, height=1, command=lambda : se_lf.controller.show_frame("EmployeePage")).grid(row=10, column=1)
-
-def test():
-   print(1)
-
-def save_new_student(name, age, Address):
-   #print(name, age, Address)
-   conn = psycopg2.connect(dbname="postgres", user="postgres",password="Minecraft6485", host="localhost", port="5432")
-   cursor = conn.cursor()
-   query = '''INSERT INTO students(name, age, address) VALUES (%s, %s, %s)'''
-   cursor.execute(query, (name, age, Address))
-   print("saved!")
-   conn.commit()
-   conn.close()
-
-   display_students()
-
-def display_students():
-   conn = psycopg2.connect(dbname="postgres", user="postgres",password="Minecraft6485", host="localhost", port="5432")
-   cursor = conn.cursor()
-   query = '''SELECT * FROM students'''
-   cursor.execute(query)
-
-   row = cursor.fetchall()
-
-   listbox = Listbox(frame, width=20, heigh=5)
-   listbox.grid(row = 10, columnspan = 4, sticky = W+E)
-
-   for x in row:
-       listbox.insert(END, x)
-   
-   conn.commit()
-   conn.close()
-   
-def main_account_screen():
-   global main_screen
-   main_screen = Tk()
-   #main_screen.geometry("300x250") Establishes window size
-   main_screen.state('zoomed') #Goes Fullscreen
-   main_screen.title("Account Login")
-   Label(text="Sistema de Membresia", bg="gray74", width="300", height="2", font=("Calibri", 13)).pack()
-   Label(text="").pack()
-   Button(text="Employee", height="2", width="30", command = login).pack()
-   Label(text="").pack()
-   Button(text="Admin", height="2", width="30").pack()
-   Label(text="").pack()
-   Button(text="Client", height="2", width="30").pack()
- 
-   main_screen.mainloop()
-
-def tabs_client(se_lf):
-      
-      TAB_CONTROL = ttk.Notebook(se_lf)
-      #Tab1
-      TAB1 = ttk.Frame(TAB_CONTROL)
-      TAB_CONTROL.add(TAB1, text='             Informacion Cliente            ')
-      
-      TAB2 = ttk.Frame(TAB_CONTROL)
-      TAB_CONTROL.add(TAB2, text='              Referido              ')
-
-      TAB3 = ttk.Frame(TAB_CONTROL)
-      TAB_CONTROL.add(TAB3, text='                Modificar Informacion            ')
-
-      TAB_CONTROL.pack(expand=5, fill="both", pady=5)
-
-      # label = Label(TAB1, text="Nombre: ")
-      # label.grid(row = 0, column=0)
-      # name = Entry(TAB1)
-      # name.grid(row = 0, column=1)
-
-      # label = Label(TAB1, text="Apellido: ")
-      # label.grid(row = 2, column=0)
-      # last_name = Entry(TAB1)
-      # last_name.grid(row = 2, column=1)
-
-      # label = Label(TAB1, text="Correo Fisico: ")
-      # label.grid(row = 3, column=0)
-      # mail_address = Entry(TAB1)
-      # mail_address.grid(row = 3, column=1)
-
-      label = Label(TAB2, text="Correo Electronico: ")
-      label.grid(row = 4, column=0)
-      mail_address = Entry(TAB2, width = 40)
-      mail_address.grid(row = 4, column=1)
-      
-      label = Label(TAB1, text = "Nombre:")
-      label.grid(row = 2, column = 1)
-      
-      listbox = Listbox(TAB1, width = 40, height = 1)
-      listbox.grid(row = 2, column=2)
-      listbox.insert(END, "Michael")
-
-      label = Label(TAB1, text = "Apellido:")
-      label.grid(row = 3, column = 1)
-
-      listbox = Listbox(TAB1, width = 40, height = 1)
-      listbox.grid(row = 3, column=2)
-      listbox.insert(END, "Jackson")
-
-      label = Label(TAB1, text = "Email:")
-      label.grid(row = 4, column = 1)
-
-      listbox = Listbox(TAB1, width = 40, height = 1)
-      listbox.grid(row = 4, column=2)
-      listbox.insert(END, "abc123@email.com")
-
-      label = Label(TAB1, text = "Direccion Postal:")
-      label.grid(row = 5, column = 1)
-
-      listbox = Listbox(TAB1, width = 40, height = 1)
-      listbox.grid(row = 5, column=2)
-      listbox.insert(END, "1093 College Ave. New Paris, OH 45347")
-
-      label = Label(TAB1, text = "Estado de Cuenta:")
-      label.grid(row = 6, column = 1)
-
-      listbox = Listbox(TAB1, width = 40, height = 1)
-      listbox.grid(row = 6, column=2)
-      listbox.insert(END, "Activo - 2")
-
-      button = tk.Button(TAB3, text="Modificar", command=lambda: search(id_search.get(), TAB1))
-      button.grid( column = 1)
-      
-      button = tk.Button(TAB2, text="Referir", command=lambda: search(id_search.get(), TAB1))
-      button.grid( column = 1)
-
-
-
-def tabs_employee(se_lf):
-   #Create Tab Control
-      TAB_CONTROL = ttk.Notebook(se_lf)
-      #Tab1
-      TAB1 = ttk.Frame(TAB_CONTROL)
-      TAB_CONTROL.add(TAB1, text='             Buscar Cliente            ')
-      
-      TAB2 = ttk.Frame(TAB_CONTROL)
-      TAB_CONTROL.add(TAB2, text='                Añadir Cliente            ')
-
-      TAB3 = ttk.Frame(TAB_CONTROL)
-      TAB_CONTROL.add(TAB3, text='                Modificar Cliente            ')
-
-      TAB4 = ttk.Frame(TAB_CONTROL)
-      TAB_CONTROL.add(TAB3, text='                Aviso de Pago            ')
-
-      TAB_CONTROL.pack(expand=5, fill="both", pady=5)
-
-
-      label = Label(TAB2, text="Nombre: ")
-      label.grid(row = 0, column=0)
-      name = Entry(TAB2, width = 40)
-      name.grid(row = 0, column=1)
-
-      label = Label(TAB2, text="Apellido: ")
-      label.grid(row = 2, column=0)
-      last_name = Entry(TAB2, width = 40)
-      last_name.grid(row = 2, column=1)
-
-      label = Label(TAB2, text="Correo Fisico: ")
-      label.grid(row = 3, column=0)
-      mail_address = Entry(TAB2, width = 40)
-      mail_address.grid(row = 3, column=1)
-
-      label = Label(TAB2, text="Correo Electronico: ")
-      label.grid(row = 4, column=0)
-      mail_address = Entry(TAB2, width = 40)
-      mail_address.grid(row = 4, column=1)
-
-      label = Label(TAB2, text="Estado de la Cuenta: ")
-      label.grid(row = 5, column=0)
-      mail_address = Entry(TAB2, width = 40)
-      mail_address.grid(row = 5, column=1)
-
-   
-      label = Label(TAB1, text="Busqueda Cliente/Edificio")
-      label.grid(row = 2, column = 1)
-
-      id_search = Entry(TAB1, width = 40)
-      id_search.grid(row = 3, column = 1)
-
-      button = tk.Button(TAB1, text="Buscar", command=lambda: search(id_search.get(), TAB1))
-      button.grid(row = 3, column = 3)
-
-      button = tk.Button(TAB2, text="Añadir", command=lambda: search(id_search.get(), TAB1))
-      button.grid( column = 1)
-
-      button = tk.Button(TAB3, text="Modificar", command=lambda: search(id_search.get(), TAB1))
-      button.grid( column = 1)
-
-def tabs_admin(se_lf):
-   #Create Tab Control
-      TAB_CONTROL = ttk.Notebook(se_lf)
-      #Tab1
-      TAB1 = ttk.Frame(TAB_CONTROL)
-      TAB_CONTROL.add(TAB1, text='             Añadir  Empleado            ')
-      
-      #TAB2
-      TAB2 = ttk.Frame(TAB_CONTROL)
-      TAB_CONTROL.add(TAB2, text='             Añadir Edificio            ')
-      
-      #TAB5 
-      TAB5 = ttk.Frame(TAB_CONTROL)
-      TAB_CONTROL.add(TAB5, text='             Añadir Articulos           ')
-
-      #TAB3
-      TAB3 = ttk.Frame(TAB_CONTROL)
-      TAB_CONTROL.add(TAB3, text='             Borrar             ')
-
-      #TAB4
-      TAB4 = ttk.Frame(TAB_CONTROL)
-      TAB_CONTROL.add(TAB4, text='             Modificar             ')
-
-      
-
-      TAB_CONTROL.pack(expand=5, fill="both",pady=5)
-      #Tab Name Labels
-      # ttk.Label(TAB1, text="This is Tab 1").grid(column=0, row=0, padx=10, pady=10)
-      # ttk.Label(TAB2, text="This is Tab 2", ).grid(column=0, row=0, padx=10, pady=10)
-      #Tab buttons
-
-      lista = ["Nombre: ", "Apellido: ", "Direccion Postal: ", "Correo Electronico: ", "Posicion del Empleado: "]
-
-      for i in range(len(lista)):
-         label = Label(TAB1, text=lista[i])
-         label.grid(row = i, column=0)
-         name = Entry(TAB1, width = 40)
-         name.grid(row = i, column=1)
-      
-      label = Label(TAB3, text="ID: ")
-      label.grid(row = 0, column=0)
-      id_num = Entry(TAB3, width = 40)
-      id_num.grid(row = 0, column=1)
-
-      label = Label(TAB2, text="Nombre Edificio: ")
-      label.grid(row = 0, column=0)
-      name = Entry(TAB2, width = 40)
-      name.grid(row = 0, column=1)
-
-      label = Label(TAB2, text="Nivel Membresia: ")
-      label.grid(row = 1, column=0)
-      name = Entry(TAB2, width = 40)
-      name.grid(row = 1, column=1)
-
-      label = Label(TAB5, text="ID Articulo: ")
-      label.grid(row = 0, column=0)
-      name = Entry(TAB5, width = 40)
-      name.grid(row = 0, column=1)
-
-      label = Label(TAB5, text="Nombre: ")
-      label.grid(row = 1, column=0)
-      name = Entry(TAB5, width = 40)
-      name.grid(row = 1, column=1)
-
-      label = Label(TAB5, text="Precio: ")
-      label.grid(row = 2, column=0)
-      name = Entry(TAB5, width = 40)
-      name.grid(row = 2, column=1)
-
-
-      tab_B1 = tk.Button(TAB1, text="Añadir", command = lambda : test()) #Añadir condicion para saber si es empleado o no
-      tab_B1.grid()
-      
-      tab_B1 = tk.Button(TAB2, text="Añadir", command = lambda : test()) #Añadir condicion para saber si es empleado o no
-      tab_B1.grid()
-
-      tab_B1 = tk.Button(TAB3, text="Eliminar", command = lambda : test()) #Añadir condicion para saber si es empleado o no
-      tab_B1.grid(column = 1)
-      
-      tab_B1 = tk.Button(TAB4, text="Modificar", command = lambda : test()) #Añadir condicion para saber si es empleado o no
-      tab_B1.grid(column = 1)
-      
-      tab_B1 = tk.Button(TAB5, text="Añadir", command = lambda : test()) #Añadir condicion para saber si es empleado o no
-      tab_B1.grid(column = 1)
-
-
-
-#main_account_screen()
-
-class SampleApp(tk.Tk): #Change CLass Name !!!!!!!!!!!
-
-    def __init__(self, *args, **kwargs):
-        tk.Tk.__init__(self, *args, **kwargs)
-
-        self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
-
-        # the container is where we'll stack a bunch of frames
-        # on top of each other, then the one we want visible
-        # will be raised above the others
-        
-      #   width= self.winfo_screenwidth()               
-
-      #   height= self.winfo_screenheight()               
-
-      #   self.geometry("%dx%d" % (width, height))
-
-        #self.geometry("800x500")
-        #self.resizable(False, False)
-        container = tk.Frame(self)
-        
-        #container.pack(side="top", fill="both", expand=True)
-        container.grid(row=0, sticky="nsew")
-        container.grid_rowconfigure(0, weight=1)
-        container.grid_columnconfigure(0, weight=1)
-
-        self.frames = {}
-        for F in (StartPage, PageOne, PageTwo, PageThree, AdminPage, ClientPage, EmployeePage):
-            page_name = F.__name__
-            frame = F(parent=container, controller=self)
-            self.frames[page_name] = frame
-
-            # put all of the pages in the same location;
-            # the one on the top of the stacking order
-            # will be the one that is visible.
-            frame.grid(row=0, column=0, sticky="nsew")
-
-        self.show_frame("StartPage")
-
-    def show_frame(self, page_name):
-        '''Show a frame for the given page name'''
-        frame = self.frames[page_name]
-        frame.tkraise()
-
-
-class StartPage(tk.Frame):
-
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        self.controller = controller
-        label = tk.Label(self, text="Sistema de Membresia", font=controller.title_font)
-        label.pack(side="top", fill="x", pady=10)
-
-        button1 = tk.Button(self, text="Cliente",
-                            command=lambda: controller.show_frame("PageOne"))
-        button2 = tk.Button(self, text="Empleado", command=lambda: controller.show_frame("PageTwo"))
-        button3 = tk.Button(self, text="Administrador",    command=lambda: controller.show_frame("PageThree"))
-        button1.pack(ipadx=34, ipady=12)
-        label = Label(self, text="")
-        label.pack()
-        button2.pack(ipadx=27, ipady=12)
-        label = Label(self, text="")
-        label.pack()
-        button3.pack(ipadx=16, ipady=12)
-
-
-class PageOne(tk.Frame): #Client Login Page
-
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        self.controller = controller
-        
-        page_setup(self, "Login Cliente")
-        login_input(self, "cli")
-        
-        label = tk.Label(self, text=" ", font=self.controller.title_font)
-        label.grid(row = 11, column=1, sticky="nsew")
-
-        button = tk.Button(self, text="Crear Cuenta", command=lambda: controller.show_frame("StartPage"))
-        button.grid(row=12, column=1)
-        
-        label = tk.Label(self, text=" ", font=self.controller.title_font)
-        label.grid(row = 13, column=1, sticky="nsew")
-
-        button = tk.Button(self, text="Volver a la Pagina Principal", command=lambda: controller.show_frame("StartPage"))
-        button.grid(row=14, column=1)
-
-
-class PageTwo(tk.Frame): #Employee Login Page
-
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        self.controller = controller
-        
-        page_setup(self, "Login Empleado")
-        login_input(self, "emp")
-        
-        button = tk.Button(self, text="Volver a la Pagina Principal", command=lambda: controller.show_frame("StartPage"))
-        button.grid(row=13, column=1)
-
-
-
-class PageThree(tk.Frame): #Admin Login Page
-   
-   def __init__(self, parent, controller):
-      tk.Frame.__init__(self, parent)
-      self.controller = controller
-
-      page_setup(self, "Login Administador")
-      login_input(self, "adm")
-
-
-      button = tk.Button(self, text="Volver a la Pagina Principal", command=lambda: controller.show_frame("StartPage"))
-      button.grid(row=12, column=1)
-   
-
-class AdminPage(tk.Frame): #Frame used to display all admin options, delete, add, etc
-
-   def __init__(self, parent, controller):
-        
-      tk.Frame.__init__(self, parent)
-      self.controller = controller
-
-      #page_setup(self, "Admin Page")
-      label = tk.Label(self, text="Admin Page", font=("Arial", 12))
-      label.pack()
-
-      tabs_admin(self)
-
-      # page_setup(self, "Admin Login")
-      # login_input(self, "adm")
-
-      button = tk.Button(self, text="Volver a la Pagina Principal", command=lambda: controller.show_frame("StartPage"))
-      button.pack()
-
-class EmployeePage(tk.Frame): #Frame used to search Clients, etc. for the Employee
-   def __init__(self, parent, controller):
-        
-      tk.Frame.__init__(self, parent)
-      self.controller = controller
-
-      #page_setup(self, "Employee Page")
-      #login_input(self, "adm")
-
-      label = tk.Label(self, text="Employee Page", font=("Arial", 12))
-      label.pack()
-
-      tabs_employee(self)
-
-      button = tk.Button(self, text="Volver a la Pagina Principal", command=lambda: controller.show_frame("StartPage"))
-      button.pack()
+from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt5.QtWidgets import QDialog, QApplication
+from PyQt5.uic import loadUi
+import re
+from datetime import datetime
+
+pass_text = "Minecraft6485"
+#TODO Arreglar lo de las pantallas cuando retornas al main window
+#NOTE corchetes seems to fix the problem of cursor.execute(query, item)
+#TypeError: not all arguments converted during string formatting
+
+#TODO hacer el cursor que conecta al database una funcion
+#Mostrar posible lista de las personas referidas
+#Añadir fechas de membresias, posiblementes hacerlo una tabla distinta (Nivel, fecha de Inicio, fecha de Vencimiento)
+#TODO Mover el projecto a un Env para posiblemente poder hacer el exe mas facil
+#TODO Añadir verificacion de Existencia en el db
+
+#Implement this for the passwords
+def polynomialRollingHash(str):
      
+    # P and M
+    p = 31
+    m = 1e9 + 9
+    power_of_p = 1
+    hash_val = 0
+ 
+    # Loop to calculate the hash value
+    # by iterating over the elements of string
+    for i in range(len(str)):
+        hash_val = ((hash_val + (ord(str[i]) -
+                                 ord('a') + 1) *
+                              power_of_p) % m)
+ 
+        power_of_p = (power_of_p * p) % m
+ 
+    return int(hash_val)
 
-class ClientPage(tk.Frame): #Frame used to display the information of the client
-   def __init__(self, parent, controller):
+class Login(QDialog):
+    def __init__(self):
+        super(Login, self).__init__()
+        loadUi("loginPage.ui", self)
+        self.Enter.clicked.connect(self.gotoclient)
+        self.adminButton.clicked.connect(self.gotoadmin)
+        self.employeeButton.clicked.connect(self.gotoemployee)
+        self.Password.setEchoMode(QtWidgets.QLineEdit.Password)
+    
+    def loginfunction(self):
+        username = self.Username.text()
+        password = self.Password.text()
+        print(username, password)
+
+    def gotoclient(self):
+        clientpage=clientPage(self.Username.text(), self.Password.text())
+        widget.addWidget(clientpage)
+        widget.setCurrentIndex(widget.currentIndex()+1)
+    
+    def gotoadmin(self):
+        adminpage = adminPage()
+        widget.addWidget(adminpage)
+        widget.setCurrentIndex(widget.currentIndex()+1)
+
+    def gotoemployee(self):
+        employeepage = employeePage()
+        widget.addWidget(employeepage)
+        widget.setCurrentIndex(widget.currentIndex()+1)
+
+
+
+class clientPage(QDialog):
+    def __init__(self, key, key2):
+        super(clientPage,self).__init__()
+        self.loadClientInfo(key, key2)
+        loadUi("ClientPage.ui", self)
         
-      tk.Frame.__init__(self, parent)
-      self.controller = controller
+        self.rButton.clicked.connect(self.clientRefer)
+        # self.Password.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.modifyButton.clicked.connect(lambda: self.modifyClientInfo(key))
+        self.returnMain.clicked.connect(self.gotomain)
+        self.deleteButton.clicked.connect(self.deleteAccount)
+        
+    def test(self):
+        print(1)
 
-      label = tk.Label(self, text="Client Page", font=("Arial", 12))
-      label.pack()
+    def clientRefer(self):
+        email = self.rEmail.text()
+        print("Email sent to " + email)
 
-      tabs_client(self)
+    def loadClientInfo(self, key, key2):
+        conn = psycopg2.connect(dbname="member_project", user="postgres", password=pass_text, host="localhost", port="5432")
+        cursor = conn.cursor()
+        query = '''SELECT * FROM mem WHERE member_id = %s AND person_id = %s'''
+        cursor.execute(query, [str(polynomialRollingHash(key)), str(polynomialRollingHash(key2))])
 
-      # page_setup(self, "Client Page")
-      #login_input(self, "adm")
+        row = cursor.fetchall() #ListaDoble row[0][0]
+        
+        conn.commit()
+        conn.close()
 
-      
+        
+        if row:
+            self.clientNameLine.setText(row[0][1])
+            self.clientLastNameLine.setText(row[0][2])
+            self.clientEmailLine.setText((row[0][4])) 
+            self.clientAddressLine.setText(row[0][5])
+            self.memTierLine.setText(str(row[0][6]))
+            
+            if datetime.today().strftime('%Y-%m-%d') > str(row[0][7]):
+                accState  = " Vencida "
+            else:
+                accState = " Activa hasta: " + str(row[0][7])
+
+            self.clientAccStateLine.setText(accState)
+        
+    
+    def modifyClientInfo(self,key):#Key can be changed to suit the proper command of the sql
+        print(not self.clientNameLine_3.text()) #This works to know if the string is empty
+        print("modify", key)
+
+    def deleteAccount(self):
+        conn = psycopg2.connect(dbname="member_project", user="postgres", password=pass_text, host="localhost", port="5432")
+        cursor = conn.cursor()
+        query = '''DELETE FROM mem WHERE person_id = %s'''
+        cursor.execute(query, [str(polynomialRollingHash(self.clientEmailLine.text()))])
+
+        conn.commit()
+        conn.close()
+
+        self.gotomain()
+        return
+    
+    def gotomain(self):
+        widget.removeWidget(widget.currentWidget())
+        widget.setCurrentIndex(widget.currentIndex()-1)
 
 
-      button = tk.Button(self, text="Volver a la Pagina Principal", command=lambda: controller.show_frame("StartPage"))
-      #button.pack(pady=25) 
-      button.pack()
+class adminPage(QDialog):
+    def __init__(self): #Add key to verify admin
+        super(adminPage,self).__init__()
+        loadUi("AdminPage.ui", self)
+        
+        self.load()
+
+        self.refreshButton.setIcon(QtGui.QIcon('refresh.png'))
+        self.refreshButton.setIconSize(QtCore.QSize(25,25))
+        self.refreshButton_2.setIcon(QtGui.QIcon('refresh.png'))
+        self.refreshButton_2.setIconSize(QtCore.QSize(25,25))
+        self.refreshButton.clicked.connect(self.ref)
+        self.refreshButton_2.clicked.connect(self.ref)
 
 
-if __name__ == "__main__":
-    app = SampleApp()
-    app.mainloop()
+        self.addItemButton.clicked.connect(self.addItem)
+
+
+        self.addBuildingButton.clicked.connect(self.addBuildings)
+        self.BuildingListDel.itemActivated.connect(self.deleteBuilding)
+        self.ProductListDel.itemActivated.connect(self.deleteItem)
+        self.buildingList.itemActivated.connect(self.modifyBuild)
+        self.itemList.itemActivated.connect(self.modifyProd)
+        self.returnMain.clicked.connect(self.gotomain)
+
+        self.modifyBuilding.clicked.connect(self.modifyBuildingdb)
+        self.ModItemButton.clicked.connect(self.modifyProductdb)
+
+    def modifyBuildingdb(self):
+        conn = psycopg2.connect(dbname="member_project", user="postgres",password=pass_text, host="localhost", port="5432")
+        cursor = conn.cursor()
+        query = '''UPDATE edificio SET nombre = %s, nivel = %s WHERE nombre = %s;'''
+        cursor.execute(query, [self.buildingModify.text(), self.buildingToAddMem_2.text(), self.buildSelecLabel.text()]) 
+
+        conn.commit()
+        conn.close()
+        self.loadBuildings(self.buildingList)
+    
+    def modifyProductdb(self):
+        conn = psycopg2.connect(dbname="member_project", user="postgres",password=pass_text, host="localhost", port="5432")
+        cursor = conn.cursor()
+        query = '''UPDATE articulos SET idarticulo = %s, nombre = %s, precio = %s WHERE idarticulo = %s; '''
+        cursor.execute(query, [self.itemModify.text(), self.itemModify_1.text(), self.itemModify_2.text(), self.prodSelecLabel.text()]) 
+
+        conn.commit()
+        conn.close()
+        self.loadArticles(self.itemList)
+        
+    def load(self):
+        self.loadArticles(self.itemList)
+        self.loadBuildings(self.buildingList)
+        self.loadArticles(self.ProductListDel)
+        self.loadBuildings(self.BuildingListDel)
+
+    def ref(self):
+        self.itemList.clear()
+        self.buildingList.clear()
+    
+        self.loadArticles(self.itemList)
+        self.loadBuildings(self.buildingList)
+
+    def addItem(self):
+        conn = psycopg2.connect(dbname="member_project", user="postgres",password=pass_text, host="localhost", port="5432")
+        cursor = conn.cursor()
+        query = '''INSERT INTO articulos (idArticulo, nombre, precio)
+                   VALUES(%s, %s, %s);'''
+        cursor.execute(query, [self.itemToAddId.text(), self.itemToAddName.text(), self.itemToAddPrice.text()]) 
+
+        conn.commit()
+        conn.close()
+        self.itemList.clear()
+        self.loadArticles(self.itemList)
+    
+    def addBuildings(self):
+        conn = psycopg2.connect(dbname="member_project", user="postgres",password=pass_text, host="localhost", port="5432")
+        cursor = conn.cursor()
+        query = '''INSERT INTO edificio (nombre, Nivel)
+                   VALUES(%s, %s);'''
+        cursor.execute(query, [self.buildingToAdd.text(), self.buildingToAddMem.text()]) 
+
+        conn.commit()
+        conn.close()
+        self.buildingList.clear()
+        self.loadBuildings(self.buildingList)
+    
+    def loadBuildings(self, listToShow):
+        conn = psycopg2.connect(dbname="member_project", user="postgres",password=pass_text, host="localhost", port="5432")
+        cursor = conn.cursor()
+        query = '''SELECT * FROM public.edificio'''
+        cursor.execute(query) 
+
+        row = cursor.fetchall() 
+        
+        conn.commit()
+        conn.close()
+
+        for x in range(0, len(row)):
+            name = row[x][0]
+            Level = row[x][1]
+
+            temp = "\nNombre Edificio: " + str(name) + "\nNivel de Membresía: "+ str(Level) + "\n"
+            listToShow.addItem(temp)
+
+    def loadArticles(self, listToShow): #could load everything here
+        conn = psycopg2.connect(dbname="member_project", user="postgres",password=pass_text, host="localhost", port="5432")
+        cursor = conn.cursor()
+        query = '''SELECT * FROM public.articulos'''
+        cursor.execute(query) 
+
+        row = cursor.fetchall() 
+        
+        conn.commit()
+        conn.close()
+
+        for x in range(0, len(row)):
+            num = row[x][0]
+            name = row[x][1]
+            price = row[x][2]
+
+            temp = "Numero ID: " + str(num) + "\nNombre Producto: " + str(name) + "\nPrecio: "+ str(price) + "\n"
+            listToShow.addItem(temp)
+
+    def deleteBuilding(self, item):
+
+        filter = re.search(r'([\w\s]+:\s)(\w+)', item.text())
+        name = filter.group(2)
+        
+        conn = psycopg2.connect(dbname="member_project", user="postgres", password=pass_text, host="localhost", port="5432")
+        cursor = conn.cursor()
+        query = '''DELETE FROM edificio WHERE nombre = %s'''
+        cursor.execute(query, [name])
+
+        conn.commit()
+        conn.close()
+
+        self.BuildingListDel.clear()
+        self.loadBuildings(self.BuildingListDel)
+
+    
+    def deleteItem(self, item):
+        
+        filter = re.search(r'([\w\s]+:\s)(\w+)', item.text())
+        id_number = filter.group(2)
+
+        conn = psycopg2.connect(dbname="member_project", user="postgres", password=pass_text, host="localhost", port="5432")
+        cursor = conn.cursor()
+        query = '''DELETE FROM articulos WHERE idarticulo = %s'''
+        cursor.execute(query, [id_number])
+
+        conn.commit()
+        conn.close()
+        
+        self.ProductListDel.clear()
+        self.loadArticles(self.ProductListDel)
+
+    def modifyProd(self, item):
+        filter = re.search(r'([\w\s]+:\s)(\w+)', item.text())
+        id_number = filter.group(2)
+        self.prodSelecLabel.setText(str(id_number))
+        
+    def modifyBuild(self, item):
+        filter = re.search(r'([\w\s]+:\s)(\w+)', item.text())
+        name = filter.group(2)
+        self.buildSelecLabel.setText(str(name))
+        
+    
+    def gotomain(self): #Works so Far
+        widget.removeWidget(widget.currentWidget())
+        widget.setCurrentIndex(widget.currentIndex()-1)
+        
+
+class employeePage(QDialog):
+    def __init__(self):
+        super(employeePage, self).__init__()
+        loadUi("EmployeePage.ui", self)
+        self.rButton.clicked.connect(self.paymentNotice)
+        self.addClientButton.clicked.connect(self.addNewClient)
+        self.search.clicked.connect(self.searchClient)
+        self.returnMain.clicked.connect(self.gotomain)
+        self.addPassword.setEchoMode(QtWidgets.QLineEdit.Password)
+
+    def searchClient(self):
+        conn = psycopg2.connect(dbname="member_project", user="postgres",password=pass_text, host="localhost", port="5432")
+        cursor = conn.cursor()
+        query = '''SELECT * FROM mem WHERE member_id = %s'''
+        item = str(polynomialRollingHash(self.clientEmailLine.text()))
+        cursor.execute(query, [item]) 
+
+        row = cursor.fetchall() 
+        
+        conn.commit()
+        conn.close()
+               
+        self.clientNameLine.setText(row[0][1])
+        self.clientLastNameLine.setText(row[0][2])
+        self.clientEmailLine.setText((row[0][4])) 
+        self.clientAddressLine.setText(row[0][5])
+
+        if datetime.today().strftime('%Y-%m-%d') > str(row[0][7]):
+            accState  = " Vencida "
+        else:
+            accState = " Activa hasta: " + str(row[0][7])
+
+        self.accStateLine.setText(accState)
+        self.memTierLine.setText(str(row[0][6]))
+
+    def addNewClient(self):
+        conn = psycopg2.connect(dbname="member_project", user="postgres",password=pass_text, host="localhost", port="5432")
+        cursor = conn.cursor()
+        query = '''INSERT INTO mem (person_id, name, lastname, member_id, email, address, tier, mem_ven)
+                   VALUES(%s, %s, %s, %s, %s, %s, %s, %s);'''
+        cursor.execute(query, [str(polynomialRollingHash(self.addPassword.text())), self.addClientName.text(), self.addClientLastName.text(), str(polynomialRollingHash(self.addClientEmail.text())) ,
+        self.addClientEmail.text(), self.addClientAddress.text(), self.addMemTier.text(), self.clientAccState.text()])
+        
+        conn.commit()
+        conn.close()
+
+    def paymentNotice(self):
+        print(self.rEmail.text())
+    
+    def gotomain(self):
+        widget.removeWidget(widget.currentWidget())
+        widget.setCurrentIndex(widget.currentIndex()-1)
+
+class accountCreation(QDialog):
+    def __init__(self):
+        super(accountCreation, self).__init__()
 
 
 
-# # Canvas
-# canvas = Canvas(root, height=380, width=400)
-# canvas.pack()
+app=QApplication(sys.argv)
+mainwindow=Login()
+widget=QtWidgets.QStackedWidget()
+widget.addWidget(mainwindow)
+widget.setFixedWidth(480)
+widget.setFixedHeight(620)
+# widget.showFullScreen()
+# widget.showMaximized()
+widget.setWindowIcon(QtGui.QIcon('icon.png'))
+widget.setWindowTitle("Club Membership System")
+widget.show()
+app.exec_()
 
-# frame = Frame()
-# frame.place(relx=0.1, rely=0.1, relwidth=0.8, relheight=0.8)
+#Implement this for the passwords
+def polynomialRollingHash(str):
+     
+    # P and M
+    p = 31
+    m = 1e9 + 9
+    power_of_p = 1
+    hash_val = 0
+ 
+    # Loop to calculate the hash value
+    # by iterating over the elements of string
+    for i in range(len(str)):
+        hash_val = ((hash_val + (ord(str[i]) -
+                                 ord('a') + 1) *
+                              power_of_p) % m)
+ 
+        power_of_p = (power_of_p * p) % m
+ 
+    return int(hash_val)
+ 
+# # Driver Code
+# if __name__ == '__main__':
+ 
+#     # Given string
+#     str1 = "sdfa" 
+ 
+#     print("Hash of '{}' = {}".format(
+#           str1, polynomialRollingHash(str1)))
 
-# # Name Input
-# label = Label(frame, text='Add Student')
-# label.grid(row=0, column=1)
 
-# label = Label(frame, text="Name")
-# label.grid(row=1, column=0)
-
-# entry_name = Entry(frame)
-# entry_name.grid(row=1, column=1)
-
-# # Age Input
-# label = Label(frame, text="Age")
-# label.grid(row=2, column=0)
-
-# entry_age = Entry(frame)
-# entry_age.grid(row=2, column=1)
-
-# # Address Input
-# label = Label(frame, text="Address")
-# label.grid(row=3, column=0)
-
-# entry_address = Entry(frame)
-# entry_address.grid(row=3, column=1)
-
-# button = Button(frame, text = "Add", command=lambda:save_new_student(entry_name.get(), entry_age.get(), entry_address.get()))
-# button.grid(row=4, column=1, sticky=W+E)
-
-# display_students()
-# root.mainloop()
+# TODO Hacer login de admin con hashing
+# TODO Hacer login de Empleado con email @club con password/ID
+# MemberID con el hashing es el email, personID es el password con Hashing
+#Pensar bien como modificar la informacion de un cliente
