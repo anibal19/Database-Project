@@ -6,7 +6,7 @@ from PyQt5.uic import loadUi
 import re
 from datetime import datetime
 
-pass_text = "Minecraft6485"
+pass_text = "password of db HERE"
 #TODO Arreglar lo de las pantallas cuando retornas al main window
 #NOTE corchetes seems to fix the problem of cursor.execute(query, item)
 #TypeError: not all arguments converted during string formatting
