@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>512</width>
-    <height>633</height>
+    <height>632</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,20 +23,20 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
    <property name="documentMode">
     <bool>true</bool>
    </property>
    <widget class="QWidget" name="tabAddEmployee">
     <attribute name="title">
-     <string>Añadir Empleado</string>
+     <string>Añadir / Modificar Empleado</string>
     </attribute>
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>60</y>
+       <x>50</x>
+       <y>20</y>
        <width>47</width>
        <height>13</height>
       </rect>
@@ -48,10 +48,10 @@
     <widget class="QLabel" name="label_3">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>90</y>
-       <width>47</width>
-       <height>13</height>
+       <x>50</x>
+       <y>50</y>
+       <width>41</width>
+       <height>16</height>
       </rect>
      </property>
      <property name="text">
@@ -62,20 +62,20 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>120</y>
-       <width>47</width>
-       <height>13</height>
+       <y>110</y>
+       <width>91</width>
+       <height>20</height>
       </rect>
      </property>
      <property name="text">
-      <string>Email:</string>
+      <string>Posicion Empleado:</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_5">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>150</y>
+       <x>20</x>
+       <y>80</y>
        <width>81</width>
        <height>16</height>
       </rect>
@@ -87,86 +87,86 @@
     <widget class="QLabel" name="label_6">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>180</y>
-       <width>91</width>
+       <x>20</x>
+       <y>140</y>
+       <width>81</width>
        <height>16</height>
       </rect>
      </property>
      <property name="text">
-      <string>Estado de Cuenta:</string>
+      <string>ID de Empleado:</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="clientNameLine">
+    <widget class="QLineEdit" name="EmpNameLine">
      <property name="geometry">
       <rect>
        <x>110</x>
-       <y>60</y>
+       <y>20</y>
        <width>351</width>
        <height>20</height>
       </rect>
      </property>
      <property name="readOnly">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
-    <widget class="QLineEdit" name="clientLastNameLine">
+    <widget class="QLineEdit" name="EmpLastNameLine">
      <property name="geometry">
       <rect>
        <x>110</x>
-       <y>90</y>
+       <y>50</y>
        <width>351</width>
        <height>20</height>
       </rect>
      </property>
      <property name="readOnly">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
-    <widget class="QLineEdit" name="clientEmailLine">
+    <widget class="QLineEdit" name="positionEmp">
      <property name="geometry">
       <rect>
        <x>110</x>
-       <y>120</y>
+       <y>110</y>
        <width>351</width>
        <height>20</height>
       </rect>
      </property>
      <property name="readOnly">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
-    <widget class="QLineEdit" name="clientAddressLine">
+    <widget class="QLineEdit" name="EmpAddressLine">
      <property name="geometry">
       <rect>
        <x>110</x>
-       <y>150</y>
+       <y>80</y>
        <width>351</width>
        <height>20</height>
       </rect>
      </property>
      <property name="readOnly">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
-    <widget class="QLineEdit" name="clientAccStateLine">
+    <widget class="QLineEdit" name="EmpId">
      <property name="geometry">
       <rect>
        <x>110</x>
-       <y>180</y>
+       <y>140</y>
        <width>351</width>
        <height>20</height>
       </rect>
      </property>
      <property name="readOnly">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QPushButton" name="addEmployeeButton">
      <property name="geometry">
       <rect>
-       <x>184</x>
-       <y>210</y>
+       <x>190</x>
+       <y>170</y>
        <width>131</width>
        <height>23</height>
       </rect>
@@ -175,10 +175,176 @@
       <string>Añadir Empleado</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="refreshButton_3">
+     <property name="geometry">
+      <rect>
+       <x>430</x>
+       <y>200</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="modifyEmp_button">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>530</y>
+       <width>141</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Modificar</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="EmpList">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>200</y>
+       <width>411</width>
+       <height>151</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="EmpLabel_2">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>360</y>
+       <width>191</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>N/A</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_12">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>360</y>
+       <width>161</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>ID de Empleado Seleccionado:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_13">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>410</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Apellido:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_14">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>380</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Nombre:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="positionEmp_2">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>470</y>
+       <width>351</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_16">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>470</y>
+       <width>91</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Posicion Empleado:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="EmpNameLine_2">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>380</y>
+       <width>351</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="clientLastNameLine_2">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>410</y>
+       <width>351</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_17">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>440</y>
+       <width>91</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Direccion:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="direccionEmp">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>440</y>
+       <width>351</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="tabAddBuilding">
     <attribute name="title">
-     <string>Añadir Edificio</string>
+     <string>Añadir / Modificar Edificio</string>
     </attribute>
     <widget class="QLabel" name="BuildingMemLabel">
      <property name="geometry">
@@ -264,12 +430,12 @@
       <rect>
        <x>290</x>
        <y>490</y>
-       <width>75</width>
+       <width>111</width>
        <height>23</height>
       </rect>
      </property>
      <property name="text">
-      <string>Añadir</string>
+      <string>Modificar Edificio</string>
      </property>
     </widget>
     <widget class="QLabel" name="BuildingNameLabel_2">
@@ -350,7 +516,7 @@
    </widget>
    <widget class="QWidget" name="tabAddArticles">
     <attribute name="title">
-     <string>Añadir Articulos</string>
+     <string>Añadir / Modificar Articulos</string>
     </attribute>
     <widget class="QLabel" name="IdNumberLabel">
      <property name="geometry">
@@ -564,169 +730,6 @@
      <property name="text">
       <string/>
      </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="tabDelete">
-    <attribute name="title">
-     <string>Modificar</string>
-    </attribute>
-    <widget class="QLineEdit" name="clientLastNameLine_3">
-     <property name="geometry">
-      <rect>
-       <x>110</x>
-       <y>40</y>
-       <width>201</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="readOnly">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_12">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>130</y>
-       <width>91</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Estado de Cuenta:</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="clientAccountStateLine_3">
-     <property name="geometry">
-      <rect>
-       <x>110</x>
-       <y>130</y>
-       <width>201</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="readOnly">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="clientEmailLine_3">
-     <property name="geometry">
-      <rect>
-       <x>110</x>
-       <y>70</y>
-       <width>201</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="readOnly">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_13">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>70</y>
-       <width>47</width>
-       <height>13</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Email:</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="clientAddressLine_3">
-     <property name="geometry">
-      <rect>
-       <x>110</x>
-       <y>100</y>
-       <width>201</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="readOnly">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_14">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>40</y>
-       <width>47</width>
-       <height>13</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Apellido:</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_15">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>100</y>
-       <width>81</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Direccion Postal:</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="clientNameLine_3">
-     <property name="geometry">
-      <rect>
-       <x>110</x>
-       <y>10</y>
-       <width>201</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="readOnly">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_16">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>47</width>
-       <height>13</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Nombre:</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="modifyButton">
-     <property name="geometry">
-      <rect>
-       <x>150</x>
-       <y>170</y>
-       <width>131</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Hacer los cambios</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="comboBox">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>260</y>
-       <width>231</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <item>
-      <property name="text">
-       <string comment="asdf">Que cosa</string>
-      </property>
-     </item>
     </widget>
    </widget>
    <widget class="QWidget" name="tabAdminModify">
